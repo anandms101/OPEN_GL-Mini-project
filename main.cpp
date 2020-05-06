@@ -79,7 +79,7 @@ void sun() {
 
     GLfloat angle;
     glLineWidth(1.5);
-    glColor3f(1, 0.2, 0);
+    glColor3f(1.000, 0.498, 0.314);
     glBegin(GL_POLYGON);
     for (int i = 0; i < 360; i++) {
         theta = i * PI * i / 180;
@@ -193,7 +193,7 @@ void line(int i, int j) {
 
 void backk(int i, int j) {
 
-    glColor3f(0, .5, 1);
+    glColor3f(0.255, 0.412, 0.882);
     glBegin(GL_QUADS);
     glVertex2f(0.0 + i, 0.0 + j);
     glVertex2f(600.0 + i, 0.0 + j);
@@ -206,7 +206,7 @@ void backk(int i, int j) {
 void ground(int i, int j) {
 
     glBegin(GL_QUADS);
-    glColor3f(0, 1.0, 0);
+    glColor3f(0.196, 0.804, 0.196);
     glVertex2f(0.0 + i, 0.0 + j);
     glVertex2f(600.0 + i, 0.0 + j);
     glVertex2f(600.0 + i, -j);
@@ -231,7 +231,7 @@ void egg() {
 void basket(int i, int j) {
     j = 10;
     if (i >= a - 60) i = a - 60;
-    glColor3f(1.0, 0.0, 0.0);
+    glColor3f(0.627, 0.322, 0.176);
     glBegin(GL_QUADS);
     glVertex2f(0.0 + i, 30.0 + j);
     glVertex2f(10.0 + i, 10.0 + j);
@@ -241,7 +241,7 @@ void basket(int i, int j) {
 }
 void duck(int i, int j) {
     int h;
-    glColor3f(1.0, 1.0, 0.0);
+    glColor3f(1.000, 0.871, 0.678);
     glBegin(GL_POLYGON);
     glVertex2f(45 + i, 45 + j);
     glVertex2f(70 + i, 20 + j);
@@ -262,7 +262,7 @@ void duck(int i, int j) {
         glEnd();
         glFlush();
     }
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(0.827, 0.827, 0.827);
     glBegin(GL_POLYGON);
     glVertex2f(82.5 + i, 107.5 + j);
     glVertex2f(65 + i, 107.5 + j);
@@ -270,12 +270,12 @@ void duck(int i, int j) {
     glVertex2f(70 + i, 95 + j);
     glEnd();
     glFlush();
-    glColor3f(0.0, 0.0, 0.0);
+    glColor3f(0.184, 0.310, 0.310);
     glPointSize(5);
     glBegin(GL_POINTS);
     glVertex2f(76 + i, 101 + j);
     glEnd();
-    glColor3f(0.0, 1.0, 0.0);
+    glColor3f(0.827, 0.827, 0.827);
     glBegin(GL_LINE_LOOP);
     glVertex2f(72.5 + i, 107.5 + j);
     glVertex2f(67.5 + i, 112.5 + j);
@@ -354,7 +354,7 @@ void display(void) {
     line(0, 375);
 
     int i;
-    char z[12] = "KhNishad";
+    char z[12] = "";
     char level1[12] = "LEVEL 1";
     char level2[12] = "LEVEL 2";
     char level3[12] = "LEVEL 3";
