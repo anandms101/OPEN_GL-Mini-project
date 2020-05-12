@@ -47,6 +47,30 @@ void myinit() {
     glMatrixMode(GL_MODELVIEW);
     glutPostRedisplay();
 }
+void tree1() {
+    glColor3f(1.0, 1.0, 1.0);
+    glBegin(GL_LINE_LOOP);
+    glVertex2f(100, 250);
+    glVertex2f(175, 250);
+    glVertex2f(175, 75);
+    glVertex2f(100, 75);
+    glEnd();
+    glBegin(GL_LINE_STRIP);
+    glVertex2f(100, 250);
+    glVertex2f(0, 250);
+    glVertex2f(75, 350);
+    glVertex2f(25, 350);
+    glVertex2f(100, 425);
+    glVertex2f(50, 425);
+    glVertex2f(140, 500);
+    glVertex2f(225, 425);
+    glVertex2f(175, 425);
+    glVertex2f(250, 350);
+    glVertex2f(200, 350);
+    glVertex2f(275, 250);
+    glVertex2f(175, 250);
+    glEnd();
+}
 void start_screen(int i, int j) {
     int k;
     char cat[4] = "EGG";
@@ -352,6 +376,7 @@ void display(void) {
     cloud1();
     cloud2();
     line(0, 375);
+    tree1();
 
     int i;
     char z[12] = "KhNishad";
