@@ -568,12 +568,12 @@ void basket_set(int a, int b)
 }
 void myReshape(int w, int h)
 {
+    glViewport(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0.0, (GLdouble) w, 0.0, (GLdouble) h);
+    gluOrtho2D(0.0, 600.0, 0.0, 650.0);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-    glViewport(0, 0, w, h);
     a = w;
     b = h;
 }
@@ -643,7 +643,6 @@ int main(int argc, char ** argv)
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
     glutInitWindowSize(a, b);
     glutCreateWindow("EGG GAME");
-    myinit();
     glutInitWindowPosition(100, 100);
     glutCreateMenu(menu);
     glutAddMenuEntry("Start game", 1);
@@ -657,6 +656,6 @@ int main(int argc, char ** argv)
     glutPassiveMotionFunc(basket_set);
     glutIdleFunc(display);
     glutReshapeFunc(myReshape);
+    myinit();
     glutMainLoop();
-    return 0;
 }
