@@ -39,6 +39,7 @@ void basket_set(int, int);
 void myReshape(int, int);
 void keys(unsigned char, int, int);
 void menu(int);
+void tree1(void);
 void myinit()
 {
     glViewport(0, 0, a, b);
@@ -240,13 +241,15 @@ void backk(int i, int j)
     glVertex2f(0.0 + i, -500 + j);
     glEnd();
     //stars
-    if(day_mode == 0){
+    if(day_mode == 0)
+    {
         glColor3f(1.0,0.0,0.0);
-        while(stars < 60){
-                glPointSize(5.0);
+        while(stars < 60)
+        {
+            glPointSize(5.0);
             glBegin(GL_POINTS);
-                glVertex2f( 300 , 400 );
-        glVertex2f( 400 , 400 );
+            glVertex2f( 300, 400 );
+            glVertex2f( 400, 400 );
             glEnd();
             stars += 1;
         }
@@ -408,11 +411,75 @@ void score()
     }
     missed_eggs = dropped_eggs - eggs_caught;
 }
+void draw_pixel(GLint cx, GLint cy)
+{
+
+    glBegin(GL_POINTS);
+    glVertex2i(cx,cy);
+    glEnd();
+}
+void plotpixels(GLint h,GLint k, GLint x,GLint y)
+{
+    draw_pixel(x+h,y+k);
+    draw_pixel(-x+h,y+k);
+    draw_pixel(x+h,-y+k);
+    draw_pixel(-x+h,-y+k);
+    draw_pixel(y+h,x+k);
+    draw_pixel(-y+h,x+k);
+    draw_pixel(y+h,-x+k);
+    draw_pixel(-y+h,-x+k);
+}
+void draw_circle(GLint h, GLint k, GLint r)
+{
+    GLint d=1-r, x=0, y=r;
+    while(y>x)
+    {
+        plotpixels(h,k,x,y);
+        if(d<0)
+            d+=2*x+3;
+        else
+        {
+            d+=2*(x-y)+5;
+            --y;
+        }
+        ++x;
+    }
+    plotpixels(h,k,x,y);
+}
+void tree1(){
+    glColor3f(0.9,0.2,0.0);
+    glBegin(GL_POLYGON);
+    glVertex2f(100,135);
+    glVertex2f(100,285);
+    glVertex2f(140,285);
+    glVertex2f(140,135);
+    glEnd();
+    for(int l=0; l<=40; l++)
+    {
+        glColor3f(0.0,0.5,0.0);
+        draw_circle(40,280,l);
+        draw_circle(90,280,l);
+        draw_circle(150,280,l);
+        draw_circle(210,280,l);
+        draw_circle(65,340,l);
+        draw_circle(115,340,l);
+        draw_circle(175,340,l);
+
+    }
+    for(int l=0; l<=55; l++)
+    {
+        glColor3f(0.0,0.5,0.0);
+        draw_circle(115,360,l);
+
+
+    }
+}
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
     ground(0, 650);
     backk(0, 650);
+    tree1();
     duck(40, 375);
     duck(180, 375);
     duck(320, 375);
@@ -420,7 +487,6 @@ void display(void)
     cloud1();
     cloud2();
     line(0, 375);
-
     int i;
     char z[12] = "";
     char level1[12] = "LEVEL 1";
@@ -563,9 +629,9 @@ void menu(int id)
 }
 int main(int argc, char ** argv)
 {
-    printf("******************************************************************");
+    printf("**********************");
     printf("\n\t\t\t\t EGG GAME\n\n");
-    printf("******************************************************************");
+    printf("**********************");
     printf("\n\tHow to Play..?\n\n <1>The objective of the game is to catch the eggs in the basket.\n\t To move Basket use mouse.\n");
     printf("\n <2> To Start, press key 's' or 'S' or \n\tClick Right mouse button then click 'Start Game'.\n");
     printf("\n <3> To Quit manually, press key 'q' or 'Q' or\n\t Click Right mouse button then click 'Quit'.\n");
@@ -592,4 +658,5 @@ int main(int argc, char ** argv)
     glutIdleFunc(display);
     glutReshapeFunc(myReshape);
     glutMainLoop();
+    return 0;
 }
