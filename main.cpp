@@ -24,6 +24,7 @@ int s = 0;
 int dropped_eggs = 0;
 int speed_1 = 1, speed_2 = 1.5, speed_3 = 2, speed_4 = 2.5;
 int w = 48, h = 48, t = 10, e = 9, g = 12;
+float cloud_xposition = 100, cloud_xposition2 = 420;
 void myinit();
 void start_screen(int, int);
 void cloud1();
@@ -124,7 +125,7 @@ void cloud1()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(100 + 50 * cos(theta) / 2, 590 + 50 * sin(theta) / 2);
+            glVertex2f(cloud_xposition + 50 * cos(theta) / 2, 590 + 50 * sin(theta) / 2);
         }
 
         glEnd();
@@ -135,7 +136,7 @@ void cloud1()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(130 + 50 * cos(theta) / 2, 580 + 50 * sin(theta) / 2);
+            glVertex2f(cloud_xposition + 30 + 50 * cos(theta) / 2, 580 + 50 * sin(theta) / 2);
         }
         glEnd();
 
@@ -145,7 +146,7 @@ void cloud1()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(140 + 50 * cos(theta) / 2, 600 + 50 * sin(theta) / 2);
+            glVertex2f(cloud_xposition + 40 + 50 * cos(theta) / 2, 600 + 50 * sin(theta) / 2);
         }
         glEnd();
 
@@ -155,9 +156,11 @@ void cloud1()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(170 + 50 * cos(theta) / 2, 590 + 50 * sin(theta) / 2);
+            glVertex2f(cloud_xposition + 70 + 50 * cos(theta) / 2, 590 + 50 * sin(theta) / 2);
         }
-
+        cloud_xposition += 0.1;
+        if(cloud_xposition > b)
+            cloud_xposition = -80;
         glEnd();
         glFlush();
     }
@@ -174,7 +177,7 @@ void cloud2()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(420 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
+            glVertex2f(cloud_xposition2 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
         }
 
         glEnd();
@@ -185,7 +188,7 @@ void cloud2()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(455 + 45 * cos(theta) / 2, 550 + 45 * sin(theta) / 2);
+            glVertex2f(cloud_xposition2 + 35 + 45 * cos(theta) / 2, 550 + 45 * sin(theta) / 2);
         }
 
         glEnd();
@@ -196,7 +199,7 @@ void cloud2()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(455 + 45 * cos(theta) / 2, 530 + 45 * sin(theta) / 2);
+            glVertex2f(cloud_xposition2 + 35 + 45 * cos(theta) / 2, 530 + 45 * sin(theta) / 2);
         }
 
         glEnd();
@@ -207,9 +210,11 @@ void cloud2()
         for (int i = 0; i < 360; i++)
         {
             theta = i * PI * i / 180;
-            glVertex2f(490 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
+            glVertex2f(cloud_xposition2 + 70 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
         }
-
+        cloud_xposition2 += 0.05;
+        if(cloud_xposition2 > b)
+            cloud_xposition2 = -80;
         glEnd();
         glFlush();
     }
@@ -447,16 +452,23 @@ void draw_circle(GLint h, GLint k, GLint r)
     plotpixels(h,k,x,y);
 }
 void tree1(){
-    glColor3f(0.9,0.2,0.0);
+    if(day_mode == 1)
+        glColor3f(0.9,0.2,0.0);
+    else
+        glColor3f(0.184, 0.310, 0.310);
     glBegin(GL_POLYGON);
     glVertex2f(100,135);
     glVertex2f(100,285);
     glVertex2f(140,285);
     glVertex2f(140,135);
     glEnd();
+    if(day_mode == 1)
+        glColor3f(0.0,0.5,0.0);
+    else
+        glColor3f(0.184, 0.310, 0.310);
     for(int l=0; l<=40; l++)
     {
-        glColor3f(0.0,0.5,0.0);
+
         draw_circle(40,280,l);
         draw_circle(90,280,l);
         draw_circle(150,280,l);
@@ -468,7 +480,7 @@ void tree1(){
     }
     for(int l=0; l<=55; l++)
     {
-        glColor3f(0.0,0.5,0.0);
+
         draw_circle(115,360,l);
 
 
@@ -656,6 +668,7 @@ int main(int argc, char ** argv)
     glutPassiveMotionFunc(basket_set);
     glutIdleFunc(display);
     glutReshapeFunc(myReshape);
+    //glutTimerFunc(0,timer,0);
     myinit();
     glutMainLoop();
 }
