@@ -25,6 +25,7 @@ int dropped_eggs = 0;
 int speed_1 = 1, speed_2 = 1.5, speed_3 = 2, speed_4 = 2.5;
 int w = 48, h = 48, t = 10, e = 9, g = 12;
 float cloud_xposition = 100, cloud_xposition2 = 420;
+int gameEnd = 0;
 void myinit();
 void start_screen(int, int);
 void cloud1();
@@ -41,6 +42,10 @@ void myReshape(int, int);
 void keys(unsigned char, int, int);
 void menu(int);
 void tree1(void);
+void endScreen(void);
+void pointreset(){
+eggs_caught = 0, missed_eggs = 0, level_count = 1, points = 0, day_mode = 1, stars = 0;
+}
 void myinit()
 {
     glViewport(0, 0, a, b);
@@ -451,7 +456,8 @@ void draw_circle(GLint h, GLint k, GLint r)
     }
     plotpixels(h,k,x,y);
 }
-void tree1(){
+void tree1()
+{
     if(day_mode == 1)
         glColor3f(0.9,0.2,0.0);
     else
@@ -489,22 +495,26 @@ void tree1(){
 void display(void)
 {
     glClear(GL_COLOR_BUFFER_BIT);
-    ground(0, 650);
-    backk(0, 650);
-    tree1();
-    duck(40, 375);
-    duck(180, 375);
-    duck(320, 375);
-    sun();
-    cloud1();
-    cloud2();
-    line(0, 375);
+    if(gameEnd == 0)
+    {
+        ground(0, 650);
+        backk(0, 650);
+        tree1();
+        duck(40, 375);
+        duck(180, 375);
+        duck(320, 375);
+        sun();
+        cloud1();
+        cloud2();
+        line(0, 375);
+    }
     int i;
     char z[12] = "";
     char level1[12] = "LEVEL 1";
     char level2[12] = "LEVEL 2";
     char level3[12] = "LEVEL 3";
     char level4[12] = "LEVEL 4";
+
 
     if (s >= 1)
     {
@@ -567,8 +577,10 @@ void display(void)
             egg_yc -= speed_1;
         score();
     }
-    else
+    else if(gameEnd == 0)
         start_screen(40, 300);
+    else if(gameEnd == 1)
+        endScreen();
     glFlush();
     glutSwapBuffers();
 }
@@ -594,6 +606,9 @@ void keys(unsigned char key, int x, int y)
     if (key == 'q' || key == 'Q')
     {
         printf("\n\n\n\t\tQUIT BY PLAYER\n\n");
+        s = 0;
+        gameEnd = 1;
+        endScreen();
         print_score();
     }
     if (key == 's' || key == 'S')
@@ -619,12 +634,18 @@ void menu(int id)
     {
     case 1:
         s += 1;
+
+        pointreset();
+        glutPostRedisplay();
         break;
     case 2:
         print_score();
         break;
     case 3:
         printf("\n\n\n\t\tQUIT BY PLAYER\n");
+        s = 0;
+        gameEnd = 1;
+        endScreen();
         break;
     case 4:
         day_mode = 1;
@@ -671,4 +692,26 @@ int main(int argc, char ** argv)
     //glutTimerFunc(0,timer,0);
     myinit();
     glutMainLoop();
+}
+void endScreen()
+{
+
+    ground(0, 650);
+    backk(0, 650);
+    //tree1();
+    //  duck(40, 375);
+    //  duck(180, 375);
+    //  duck(320, 375);
+    sun();
+    cloud1();
+    cloud2();
+    // line(0, 375);
+    glColor3f(1, 1, 1);
+    glRasterPos2i(500, 300);
+    char txt[16];
+    int myNum = 20;
+    sprintf(txt, "%d", myNum);
+    glutBitmapCharacter(GLUT_BITMAP_8_BY_13,txt[0]);
+
+    glutPostRedisplay();
 }
