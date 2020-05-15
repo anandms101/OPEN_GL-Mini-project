@@ -13,7 +13,7 @@
 #define CIRCLE_RADIUS 0.15 f
 # define PI 3.14159265358979323846
 int eggs_caught = 0, missed_eggs = 0, level_count = 1, points = 0, day_mode = 1, stars = 0;
-
+float duck_xposition = 40, duck_xposition1 = 180,duck_xposition2 = 320,duck_xposition3 = 460,duck_xposition4 = 600,duck_xposition5 = 740,duck_xposition6 = 880;
 int egg_xc, egg_yc;
 // for coordinates of egg
 int basket_x, basket_y;
@@ -22,7 +22,7 @@ int a = 600, b = 650; // for default size of the screen
 int s = 0;
 // for menu option
 int dropped_eggs = 0;
-int speed_1 = 1, speed_2 = 1.5, speed_3 = 2, speed_4 = 2.5;
+int speed_1 = 2, speed_2 = 2.2, speed_3 = 2.5, speed_4 = 3;
 int w = 48, h = 48, t = 10, e = 9, g = 12;
 float cloud_xposition = 100, cloud_xposition2 = 420;
 void myinit();
@@ -30,7 +30,7 @@ void start_screen(int, int);
 void cloud1();
 void egg();
 void basket(int, int);
-void duck(int, int);
+void duck(float, float);
 void print_score();
 void egg_start();
 void color();
@@ -41,6 +41,7 @@ void myReshape(int, int);
 void keys(unsigned char, int, int);
 void menu(int);
 void tree1(void);
+void bushes(void);
 void myinit()
 {
     glViewport(0, 0, a, b);
@@ -158,7 +159,7 @@ void cloud1()
             theta = i * PI * i / 180;
             glVertex2f(cloud_xposition + 70 + 50 * cos(theta) / 2, 590 + 50 * sin(theta) / 2);
         }
-        cloud_xposition += 0.1;
+        cloud_xposition += 1;
         if(cloud_xposition > b)
             cloud_xposition = -80;
         glEnd();
@@ -212,7 +213,7 @@ void cloud2()
             theta = i * PI * i / 180;
             glVertex2f(cloud_xposition2 + 70 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
         }
-        cloud_xposition2 += 0.05;
+        cloud_xposition2 += 0.2;
         if(cloud_xposition2 > b)
             cloud_xposition2 = -80;
         glEnd();
@@ -306,10 +307,11 @@ void basket(int i, int j)
     glVertex2f(60.0 + i, 30.0 + j);
     glEnd();
 }
-void duck(int i, int j)
+void duck(float i, float j)
 {
-    int h;
+    float h;
     glColor3f(1.000, 0.871, 0.678);
+
     glBegin(GL_POLYGON);
     glVertex2f(45 + i, 45 + j);
     glVertex2f(70 + i, 20 + j);
@@ -351,6 +353,27 @@ void duck(int i, int j)
     glVertex2f(72.5 + i, 110 + j);
     glVertex2f(77.5 + i, 112.5 + j);
     glEnd();
+    duck_xposition -= 0.3;
+    duck_xposition1 -= 0.3;
+    duck_xposition2 -= 0.3;
+    duck_xposition3 -= 0.3;
+    duck_xposition4 -= 0.3;
+    duck_xposition5 -= 0.3;
+    duck_xposition6 -= 0.3;
+    if( duck_xposition <= -110)
+        duck_xposition = 600;
+    if( duck_xposition1 <= -110)
+        duck_xposition1 = 600;
+    if( duck_xposition2 <= -110)
+        duck_xposition2 = 600;
+    if( duck_xposition3 <= -110)
+        duck_xposition3 = 600;
+    if( duck_xposition4 <= -110)
+        duck_xposition4 = 600;
+    if( duck_xposition5 <= -110)
+        duck_xposition5 = 600;
+    if( duck_xposition6 <= -110)
+        duck_xposition6 = 600;
     glFlush();
 }
 
@@ -451,9 +474,10 @@ void draw_circle(GLint h, GLint k, GLint r)
     }
     plotpixels(h,k,x,y);
 }
-void tree1(){
+void tree1()
+{
     if(day_mode == 1)
-        glColor3f(0.9,0.2,0.0);
+        glColor3f(0.627, 0.322, 0.176);
     else
         glColor3f(0.184, 0.310, 0.310);
     glBegin(GL_POLYGON);
@@ -468,7 +492,6 @@ void tree1(){
         glColor3f(0.184, 0.310, 0.310);
     for(int l=0; l<=40; l++)
     {
-
         draw_circle(40,280,l);
         draw_circle(90,280,l);
         draw_circle(150,280,l);
@@ -476,14 +499,10 @@ void tree1(){
         draw_circle(65,340,l);
         draw_circle(115,340,l);
         draw_circle(175,340,l);
-
     }
     for(int l=0; l<=55; l++)
     {
-
         draw_circle(115,360,l);
-
-
     }
 }
 void display(void)
@@ -492,9 +511,14 @@ void display(void)
     ground(0, 650);
     backk(0, 650);
     tree1();
-    duck(40, 375);
-    duck(180, 375);
-    duck(320, 375);
+    bushes();
+    duck(duck_xposition, 375);
+    duck(duck_xposition1, 375);
+    duck(duck_xposition2, 375);
+    duck(duck_xposition3, 375);
+    duck(duck_xposition4, 375);
+    //duck(duck_xposition5, 375);
+    //duck(duck_xposition6, 375);
     sun();
     cloud1();
     cloud2();
@@ -625,6 +649,7 @@ void menu(int id)
         break;
     case 3:
         printf("\n\n\n\t\tQUIT BY PLAYER\n");
+        exit(0);
         break;
     case 4:
         day_mode = 1;
@@ -671,4 +696,71 @@ int main(int argc, char ** argv)
     //glutTimerFunc(0,timer,0);
     myinit();
     glutMainLoop();
+}
+void bushes()
+{
+    GLint bush_xposition = 517, bush_yposition = 160;
+    if(day_mode == 1)
+        glColor3f(0.420, 0.557, 0.137);
+    else
+        glColor3f(0.184, 0.310, 0.310);
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition,bush_yposition,l);
+        draw_circle(bush_xposition + 20,bush_yposition,l);
+        draw_circle(bush_xposition + 40,bush_yposition,l);
+        draw_circle(bush_xposition + 60,bush_yposition,l);
+        draw_circle(bush_xposition + 10,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 30,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 50,bush_yposition + 30,l);
+    }
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition + 30,bush_yposition + 50,l);
+    }
+    bush_xposition -= 150, bush_yposition = 100;
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition,bush_yposition,l);
+        draw_circle(bush_xposition + 20,bush_yposition,l);
+        draw_circle(bush_xposition + 40,bush_yposition,l);
+        draw_circle(bush_xposition + 60,bush_yposition,l);
+        draw_circle(bush_xposition + 10,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 30,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 50,bush_yposition + 30,l);
+    }
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition + 30,bush_yposition + 50,l);
+    }
+    bush_xposition = 30, bush_yposition = 130;
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition,bush_yposition,l);
+        draw_circle(bush_xposition + 20,bush_yposition,l);
+        draw_circle(bush_xposition + 40,bush_yposition,l);
+        draw_circle(bush_xposition + 60,bush_yposition,l);
+        draw_circle(bush_xposition + 10,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 30,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 50,bush_yposition + 30,l);
+    }
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition + 30,bush_yposition + 50,l);
+    }
+    bush_xposition = 140, bush_yposition = 150;
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition,bush_yposition,l);
+        draw_circle(bush_xposition + 20,bush_yposition,l);
+        draw_circle(bush_xposition + 40,bush_yposition,l);
+        draw_circle(bush_xposition + 60,bush_yposition,l);
+        draw_circle(bush_xposition + 10,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 30,bush_yposition + 30,l);
+        draw_circle(bush_xposition + 50,bush_yposition + 30,l);
+    }
+    for(int l=0; l<=20; l++)
+    {
+        draw_circle(bush_xposition + 30,bush_yposition + 50,l);
+    }
 }
