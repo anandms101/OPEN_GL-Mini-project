@@ -119,6 +119,15 @@ void sun()
         }
 
         glEnd();
+        glColor3f(0.098, 0.098, 0.439);
+        glBegin(GL_POLYGON);
+        for (int i = 0; i < 360; i++)
+        {
+            theta = i * PI * i / 180;
+            glVertex2f(115 + 80 * cos(theta) / 2, 620 + 80 * sin(theta) / 2);
+        }
+
+        glEnd();
     }
 
     glFlush();
