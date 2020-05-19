@@ -1,29 +1,14 @@
 #include<windows.h>
-
 #include<stdio.h>
-
 #include<GL/glut.h>
-
 #include<stdlib.h>
-
 #include<math.h>
-
 #include<string.h>
-
 #define CIRCLE_RADIUS 0.15 f
 # define PI 3.14159265358979323846
-int eggs_caught = 0, missed_eggs = 0, level_count = 1, points = 0, day_mode = 1, stars = 0;
+int eggs_caught = 0, missed_eggs = 0, level_count = 1, points = 0, day_mode = 1, stars = 0, egg_xc, egg_yc,duck_animation = 0,basket_x, basket_y,a = 600, b = 650,s = 0,dropped_eggs = 0,speed_1 = 2, speed_2 = 2.2, speed_3 = 2.5, speed_4 = 3,w = 48, h = 48, t = 10, e = 9, g = 12;
 float duck_xposition = 40, duck_xposition1 = 180,duck_xposition2 = 320,duck_xposition3 = 460,duck_xposition4 = 600,duck_xposition5 = 740,duck_xposition6 = 880;
-int egg_xc, egg_yc;
-// for coordinates of egg
-int basket_x, basket_y;
-// for coordinates of basket
-int a = 600, b = 650; // for default size of the screen
-int s = 0;
-// for menu option
-int dropped_eggs = 0;
-int speed_1 = 2, speed_2 = 2.2, speed_3 = 2.5, speed_4 = 3;
-int w = 48, h = 48, t = 10, e = 9, g = 12;
+GLfloat spin = 0.0;
 float cloud_xposition = 100, cloud_xposition2 = 420;
 void myinit();
 void start_screen(int, int);
@@ -42,6 +27,32 @@ void keys(unsigned char, int, int);
 void menu(int);
 void tree1(void);
 void bushes(void);
+void mountain(void);
+void hill_big()
+{
+    glPushMatrix();
+    glTranslated(250,78,0);
+    glBegin(GL_POLYGON);
+    glColor3f(0.627, 0.322, 0.176);
+    if(day_mode != 1)
+        glColor3f(	0.184, 0.310, 0.310);
+    glVertex2i(70, 70);
+    glVertex2i(200, 225);
+    glVertex2i(330, 70);
+    glEnd();
+    glBegin(GL_POLYGON);
+    glColor3f(1.25, 0.924, 0.930);
+    if(day_mode != 1)
+        glColor3f(	0.184, 0.310, 0.310);
+    glVertex2i(200, 225);
+    glVertex2i(230, 190);
+    glVertex2i(220, 180);
+    glVertex2i(200, 190);
+    glVertex2i(190, 180);
+    glVertex2i(170, 190);
+    glEnd();
+    glPopMatrix();
+}
 void myinit()
 {
     glViewport(0, 0, a, b);
@@ -53,11 +64,11 @@ void myinit()
 }
 void start_screen(int i, int j)
 {
-    int k;
+                int k;
     char cat[4] = "EGG";
     char orr[9] = "Catching";
     char hatch[5] = "Game";
-    char start[20] = "Press S for start";
+    char start[19] = "Press S to start";
     glColor3f(0, 1, 0);
     glRasterPos2i(150, 320);
     for (k = 0; k < 4; k++)
@@ -72,17 +83,17 @@ void start_screen(int i, int j)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, hatch[k]);
     glColor3f(1, 1, 0);
     glRasterPos2i(210, 200);
-    for (k = 0; k < 20; k++)
+    for (k = 0; k < 19; k++)
         glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, start[k]);
+    glRasterPos2i(210, 230);
     glColor3f(1, .5, .5);
+
 
 }
 
 void sun()
 {
-
     float theta;
-
     GLfloat angle;
     glLineWidth(1.5);
     if(day_mode == 1)
@@ -97,7 +108,6 @@ void sun()
 
         glEnd();
     }
-    //added night_mode
     else if(day_mode == 0)
     {
         glColor3f(0.961, 0.961, 0.961);
@@ -130,7 +140,6 @@ void cloud1()
         }
 
         glEnd();
-        //GLfloat angle;
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -140,7 +149,6 @@ void cloud1()
             glVertex2f(cloud_xposition + 30 + 50 * cos(theta) / 2, 580 + 50 * sin(theta) / 2);
         }
         glEnd();
-
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -150,7 +158,6 @@ void cloud1()
             glVertex2f(cloud_xposition + 40 + 50 * cos(theta) / 2, 600 + 50 * sin(theta) / 2);
         }
         glEnd();
-
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -166,7 +173,6 @@ void cloud1()
         glFlush();
     }
 }
-
 void cloud2()
 {
     if(day_mode == 1)
@@ -180,9 +186,7 @@ void cloud2()
             theta = i * PI * i / 180;
             glVertex2f(cloud_xposition2 + 45 * cos(theta) / 2, 540 + 45 * sin(theta) / 2);
         }
-
         glEnd();
-
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -193,7 +197,6 @@ void cloud2()
         }
 
         glEnd();
-
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -202,9 +205,7 @@ void cloud2()
             theta = i * PI * i / 180;
             glVertex2f(cloud_xposition2 + 35 + 45 * cos(theta) / 2, 530 + 45 * sin(theta) / 2);
         }
-
         glEnd();
-
         glLineWidth(1.5);
         glColor3f(1, 1, 1);
         glBegin(GL_POLYGON);
@@ -246,41 +247,295 @@ void backk(int i, int j)
     glVertex2f(600.0 + i, -500 + j);
     glVertex2f(0.0 + i, -500 + j);
     glEnd();
-    //stars
     if(day_mode == 0)
     {
-        glColor3f(1.0,0.0,0.0);
-        while(stars < 60)
-        {
-            glPointSize(5.0);
-            glBegin(GL_POINTS);
-            glVertex2f( 300, 400 );
-            glVertex2f( 400, 400 );
-            glEnd();
-            stars += 1;
-        }
+        glPushMatrix();
+        glTranslated(-20,-30,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-100,-140,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-200,-60,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-270,-30,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-200,-300,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-400,-30,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-450,-130,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+        glPushMatrix();
+        glTranslated(-350,-70,0);
+        glColor3f(1.0,1.0,1.0);
+        glBegin(GL_TRIANGLES);
+        glVertex2f(575,653);
+        glVertex2f(570,645);
+        glVertex2f(580,645);
+        glVertex2f(575,642);
+        glVertex2f(570,650);
+        glVertex2f(580,650);
+        glEnd();
+        glPopMatrix();
+
     }
     glFlush();
 
 }
 void ground(int i, int j)
 {
-
-    glBegin(GL_QUADS);
-    if(day_mode == 1)
-        glColor3f(0.196, 0.804, 0.196);
-    else
+    ///Field_Shadow
+    glBegin(GL_POLYGON);
+    glColor3f(0.000, 1.000, 0.000);
+    if(day_mode != 1)
         glColor3f(	0.184, 0.310, 0.310);
-    glVertex2f(0.0 + i, 0.0 + j);
-    glVertex2f(600.0 + i, 0.0 + j);
-    glVertex2f(600.0 + i, -j);
-    glVertex2f(0.0 + i, -j);
+    glVertex2i(0, 0);
+    glVertex2i(0, 150);
+    glVertex2i(600, 150);
+    glVertex2i(600, 0);
+    glEnd();
+    ///Field
+    glBegin(GL_POLYGON);
+    glColor3f(0.533, 1.293, 0.0);
+    if(day_mode != 1)
+        glColor3f(	0.184, 0.310, 0.310);
+    glVertex2i(0, 130);
+    glVertex2i(0, 150);
+    glVertex2i(600, 150);
+    glVertex2i(600, 120);
+    glEnd();
+    int grass_xposition = 100,grass_yposition = 50;
+    glColor3f(0.180, 0.545, 0.341);
+    if(day_mode != 1)
+        glColor3f(	0.184, 0.310, 0.310);
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 10,grass_yposition = 10;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 40,grass_yposition = 70;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 200,grass_yposition = 70;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 300,grass_yposition = 40;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 400,grass_yposition = 20;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 470,grass_yposition = 100;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    grass_xposition = 530,grass_yposition = 80;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 10,grass_yposition);
+    glVertex2f(grass_xposition + 30,grass_yposition + 50);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 20,grass_yposition + 60);
+    glVertex2f(grass_xposition + 5,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 8,grass_yposition);
+    glVertex2f(grass_xposition + 2,grass_yposition + 60);
+    glEnd();
+    glColor3f(0.133, 0.545, 0.133);
+    if(day_mode != 1)
+        glColor3f(	0.184, 0.310, 0.310);
+    grass_xposition = 530,grass_yposition = 30;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 25,grass_yposition);
+    glVertex2f(grass_xposition + 45,grass_yposition + 30);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 35,grass_yposition + 45);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+    glVertex2f(grass_xposition + 18,grass_yposition + 45);
+    glEnd();
+    grass_xposition = 150,grass_yposition = 150;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 25,grass_yposition);
+    glVertex2f(grass_xposition + 45,grass_yposition + 30);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 35,grass_yposition + 45);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+    glVertex2f(grass_xposition + 18,grass_yposition + 45);
+    glEnd();
+    grass_xposition = 300,grass_yposition = 90;
+    glBegin(GL_TRIANGLES);
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 25,grass_yposition);
+    glVertex2f(grass_xposition + 45,grass_yposition + 30);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition - 35,grass_yposition + 45);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+
+    glVertex2f(grass_xposition,grass_yposition);
+    glVertex2f(grass_xposition + 20,grass_yposition);
+    glVertex2f(grass_xposition + 18,grass_yposition + 45);
     glEnd();
 }
 
 void egg()
 {
-
     float x, y, z;
     int t;
     glColor3f(1.0, 10, 1.0);
@@ -311,7 +566,9 @@ void duck(float i, float j)
 {
     float h;
     glColor3f(1.000, 0.871, 0.678);
-
+    glBlendFunc(GL_ONE, GL_SRC_ALPHA);
+    glEnable(GL_POLYGON_SMOOTH);
+    glHint(GL_POLYGON_SMOOTH_HINT, GL_NICEST);
     glBegin(GL_POLYGON);
     glVertex2f(45 + i, 45 + j);
     glVertex2f(70 + i, 20 + j);
@@ -353,27 +610,30 @@ void duck(float i, float j)
     glVertex2f(72.5 + i, 110 + j);
     glVertex2f(77.5 + i, 112.5 + j);
     glEnd();
-    duck_xposition -= 0.3;
-    duck_xposition1 -= 0.3;
-    duck_xposition2 -= 0.3;
-    duck_xposition3 -= 0.3;
-    duck_xposition4 -= 0.3;
-    duck_xposition5 -= 0.3;
-    duck_xposition6 -= 0.3;
-    if( duck_xposition <= -110)
-        duck_xposition = 600;
-    if( duck_xposition1 <= -110)
-        duck_xposition1 = 600;
-    if( duck_xposition2 <= -110)
-        duck_xposition2 = 600;
-    if( duck_xposition3 <= -110)
-        duck_xposition3 = 600;
-    if( duck_xposition4 <= -110)
-        duck_xposition4 = 600;
-    if( duck_xposition5 <= -110)
-        duck_xposition5 = 600;
-    if( duck_xposition6 <= -110)
-        duck_xposition6 = 600;
+    if(duck_animation == 1)
+    {
+        duck_xposition -= 0.3;
+        duck_xposition1 -= 0.3;
+        duck_xposition2 -= 0.3;
+        duck_xposition3 -= 0.3;
+        duck_xposition4 -= 0.3;
+        duck_xposition5 -= 0.3;
+        duck_xposition6 -= 0.3;
+        if( duck_xposition <= -110)
+            duck_xposition = 600;
+        if( duck_xposition1 <= -110)
+            duck_xposition1 = 600;
+        if( duck_xposition2 <= -110)
+            duck_xposition2 = 600;
+        if( duck_xposition3 <= -110)
+            duck_xposition3 = 600;
+        if( duck_xposition4 <= -110)
+            duck_xposition4 = 600;
+        if( duck_xposition5 <= -110)
+            duck_xposition5 = 600;
+        if( duck_xposition6 <= -110)
+            duck_xposition6 = 600;
+    }
     glFlush();
 }
 
@@ -510,15 +770,14 @@ void display(void)
     glClear(GL_COLOR_BUFFER_BIT);
     ground(0, 650);
     backk(0, 650);
-    tree1();
-    bushes();
-    duck(duck_xposition, 375);
-    duck(duck_xposition1, 375);
-    duck(duck_xposition2, 375);
-    duck(duck_xposition3, 375);
-    duck(duck_xposition4, 375);
-    //duck(duck_xposition5, 375);
-    //duck(duck_xposition6, 375);
+        tree1();
+        hill_big();
+        bushes();
+        duck(duck_xposition, 375);
+        duck(duck_xposition1, 375);
+        duck(duck_xposition2, 375);
+        duck(duck_xposition3, 375);
+        duck(duck_xposition4, 375);
     sun();
     cloud1();
     cloud2();
@@ -529,7 +788,6 @@ void display(void)
     char level2[12] = "LEVEL 2";
     char level3[12] = "LEVEL 3";
     char level4[12] = "LEVEL 4";
-
     if (s >= 1)
     {
         glColor3f(0, 0, 1);
@@ -607,7 +865,7 @@ void myReshape(int w, int h)
     glViewport(0,0,w,h);
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluOrtho2D(0.0, 600.0, 0.0, 650.0);
+    gluOrtho2D(0.0, w, 0.0, h);
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
     a = w;
@@ -659,6 +917,12 @@ void menu(int id)
         day_mode = 0;
         stars = 0;
         break;
+    case 6:
+        duck_animation = 1;
+        break;
+    case 7:
+        duck_animation = 0;
+        break;
     default:
         exit(0);
     }
@@ -687,13 +951,14 @@ int main(int argc, char ** argv)
     glutAddMenuEntry("Quit", 3);
     glutAddMenuEntry("Day mode", 4);
     glutAddMenuEntry("night mode", 5);
+    glutAddMenuEntry("move ducks", 6);
+    glutAddMenuEntry("stop ducks", 7);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutDisplayFunc(display);
     glutKeyboardFunc(keys);
     glutPassiveMotionFunc(basket_set);
     glutIdleFunc(display);
     glutReshapeFunc(myReshape);
-    //glutTimerFunc(0,timer,0);
     myinit();
     glutMainLoop();
 }
