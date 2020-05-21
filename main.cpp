@@ -370,7 +370,7 @@ void myinit()
 }
 void start_screen(int i, int j)
 {
-                int k;
+    int k;
     char cat[4] = "EGG";
     char orr[9] = "Catching";
     char hatch[5] = "Game";
@@ -1271,12 +1271,6 @@ void menu(int id)
         stars = 0;
         break;
     case 6:
-        duck_animation = 1;
-        break;
-    case 7:
-        duck_animation = 0;
-        break;
-    case 8:
         if(dino_rot == 1)
             dino_rot = 0;
         else
@@ -1310,9 +1304,7 @@ int main(int argc, char ** argv)
     glutAddMenuEntry("Quit", 3);
     glutAddMenuEntry("Day mode", 4);
     glutAddMenuEntry("night mode", 5);
-    glutAddMenuEntry("move ducks", 6);
-    glutAddMenuEntry("stop ducks", 7);
-    glutAddMenuEntry("rotate dino", 8);
+    glutAddMenuEntry("rotate dino", 6);
     glutAttachMenu(GLUT_RIGHT_BUTTON);
     glutDisplayFunc(display);
     glutKeyboardFunc(keys);
